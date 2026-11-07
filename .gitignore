@@ -237,6 +237,9 @@ __marimo__/
 .claude.json
 .claude.json.backup
 .credentials.json
+# 個人指令檔（它一存在，Claude 就不讀 AGENTS.md；見 AGENTS.md ②6）與工具建的 worktree（AGENTS.md ②5 不用）
+CLAUDE.local.md
+.claude/worktrees/
 
 
 # ============================================================
