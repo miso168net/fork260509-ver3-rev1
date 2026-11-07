@@ -19,6 +19,7 @@
 5. 工作只在既有的三個工作樹（外層根、`base-web/`、`rust-api/`）裡做：不建 git worktree，也不用各工具內建的 worktree 隔離與 `/implement-spec` 的平行模式（別處的 worktree 找不到 hook，commit 會漏掃）。
 6. 專案規則只寫在本檔與 `rust-api/AGENTS.md`（`base-web/AGENTS.md` 是上游檔，照 ④6）。任何目錄多出 CLAUDE.md、`.claude/CLAUDE.md`、CLAUDE.local.md 或 AGENTS.override.md，就有工具改讀它、不讀該處的 AGENTS.md；user 要建時先說明這個後果並確認。
 7. 各工具的 `/init`、`/import` 類指令不在本 repo 跑（會改寫本檔或另建入口檔）。
+8. 每個 repo 同時只有一個寫入者 session（改檔、或下會寫 `.git` 的 git 命令）；寫子庫的 session 要回外層更新 gitlink（③），所以也是外層的寫入者。其他 session 唯讀：user 以唯讀模式開（見 `README.md`「AI 工具前提」）或說明只讀的 session，git 查詢一律寫成 `git --no-optional-locks …`（例 `git --no-optional-locks -C base-web status`），以免順手改寫 `.git/index`、撞上寫入者的 `index.lock`。要寫入前發現不是自己造成的改動（`git status` 列出沒動過的檔、讀過的檔內容變了、`index.lock` 已存在），先停手問 user 有沒有別的 session 在寫。
 
 ## ③ 子庫 git 紀律
 

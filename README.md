@@ -46,13 +46,14 @@ betterleaks version
 
 ## AI 工具前提
 
-| 工具 | 前提 |
-|---|---|
-| Claude Code | 終端 `claude`，版本 ≥ 2.1.285，從外層根啟動；新 session 的 `/memory` 列得出外層 `AGENTS.md`（只看、按 Esc） |
-| Codex | 從外層根啟動；問到是否信任此資料夾時選信任（標成不信任就不讀 `AGENTS.md`） |
-| Antigravity CLI | 從外層根啟動 `agy`；問到是否信任此資料夾時選信任 |
-| VS Code Copilot | 以單一資料夾開外層根，用預設的 Copilot 引擎 |
+| 工具 | 前提 | 唯讀開法 |
+|---|---|---|
+| Claude Code | 終端 `claude`，版本 ≥ 2.1.285，從外層根啟動；新 session 的 `/memory` 列得出外層 `AGENTS.md`（只看、按 Esc） | `claude --permission-mode plan` |
+| Codex | 從外層根啟動；問到是否信任此資料夾時選信任（標成不信任就不讀 `AGENTS.md`） | `codex --sandbox read-only` |
+| Antigravity CLI | 從外層根啟動 `agy`；問到是否信任此資料夾時選信任 | 第一句話說明本 session 只讀 |
+| VS Code Copilot | 以單一資料夾開外層根，用預設的 Copilot 引擎 | 第一句話說明本 session 只讀 |
 
+- 同一個 repo 同時只開一個會寫入的 session，其他 session 用上表的唯讀開法（規則見 `AGENTS.md` ②8）。唯讀 session 請你核准改檔或寫入命令時一律拒絕；Claude 在 plan mode 問「Would you like to proceed?」時選 `No, keep planning`（選 Yes 就會開始改檔）。
 - 各工具的核准設定維持預設：Codex 不開 `network_access`、不用完全存取模式；Antigravity 不加 `allow command(git)`；VS Code 不開 `chat.tools.global.autoApprove`。
 - 雲端 agent（GitHub Copilot coding agent、Codex cloud、base-web fork 的 `/oc` workflow）預設不用，要用先經 user 決定：它們的 commit 不經本機機密掃描。
 - GitHub 端：外層與 base-web fork 已開 secret scanning 與 push protection；rust-api 是 private，只靠本機 hook。
