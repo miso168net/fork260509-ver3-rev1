@@ -218,3 +218,136 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# ============================================================
+# Claude Code credentials — never commit to git
+# Shared credentials = Anthropic ToS violation
+# Each team member uses their own Claude account
+# ============================================================
+.claude/.credentials.json
+.claude/credentials.json
+.claude/projects/
+.claude/todos/
+.claude/statsig/
+.claude/shell-snapshots/
+.claude/ide/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude.json
+.claude.json.backup
+.credentials.json
+
+
+# ============================================================
+# 工作區根目錄 .gitignore
+# 此 repo 的目的：追蹤 ver3-rev1 傘狀 workspace 的文件、spec、編排中樞
+# 兩個 fork 源倉有自己的 git remote，不在此追蹤
+# ============================================================
+
+# fork 來源倉（worktree 的源頭，必須留在本機；不在外層追蹤）
+fork260509-soybean-admin-base/
+fork260509-soybean-3-rust-api/
+
+# ============================================================
+# worktree + submodule 並存
+# base-web/  是 fork260509-soybean-admin-base  的 ver3-rev1-base-web 分支 worktree
+# rust-api/  是 fork260509-soybean-3-rust-api  的 ver3-rev1-rust-api 分支 worktree
+# 外層 git 把它們當 submodule（gitlink + .gitmodules），追蹤當前使用的 fork SHA。
+# **故意不在這裡擋** — 擋了 git 就 add 不進來。
+# ============================================================
+
+
+# ============================================================
+# graphify 中可重產與個人化的內容（只保留 graph.json + GRAPH_REPORT.md）
+# ============================================================
+graphify-out/cache/
+graphify-out/obsidian/
+graphify-out/graph.html
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/.graphify_*.json
+graphify-out/.needs_update
+graphify-out/.vocab.txt
+graphify-out/20*/
+graphify-out/cost.json
+graphify-out/manifest.json
+
+# ============================================================
+# Secrets / env
+# ============================================================
+*.pem
+*.key
+.dev.vars
+
+/deploy/secrets/*.txt
+/deploy/secrets/*.txt.new
+!/deploy/secrets/*.txt.example
+/deploy/secrets/*.json
+!/deploy/secrets/*.json.example
+deploy/dev-certs/*
+!deploy/dev-certs/.gitkeep
+
+deploy/.env
+.env.local
+.env.*.local
+
+# ============================================================
+# Docker / dev container 個人 override
+# ============================================================
+docker-compose.override.yml
+.devcontainer/devcontainer.local.json
+
+# ============================================================
+# Node / pnpm / TypeScript
+# ============================================================
+#dist/
+coverage/
+node_modules/
+.pnpm-store/
+npm-debug.log*
+.pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+.vitest-cache/
+
+# ============================================================
+# Python（工具暫存）
+# ============================================================
+#__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ============================================================
+# IDE
+# ============================================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================================================
+# OS
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================================
+# Logs / 暫存 / 殘骸
+# ============================================================
+*.log
+logs/
+*.tmp
+tmp/
+*.bak
+.cache/
+*.orig
+*.rej
+
+tests/**/screenshots/

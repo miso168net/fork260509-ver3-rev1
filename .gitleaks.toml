@@ -1,0 +1,25 @@
+# .gitleaks.toml — ver3-rev1 三 repo（外層、base-web、rust-api）共用機密掃描設定；由 betterleaks 讀取（自 rev6 同名檔精簡改寫）
+#
+# ★[extend] useDefault：自訂 config 會「取代」內建規則庫——必須以 extend 保留預設規則，否則廣譜偵測全滅
+#   （hook 另以 config check 斷言規則數，打錯即擋）。
+# ★只用 gitleaks 子集欄位（[extend]／[[rules]]／[[allowlists]]），保 betterleaks 與 gitleaks 雙向可攜。
+# ★allowlist 紀律：每條 condition = "AND"、paths×regexes 並用、顯式 regexTarget，嚴禁整檔放行（condition 預設 OR，
+#   漏寫即退化為過寬放行且不報錯）；收錄前先雙向實證：加豁免→不命中、拔豁免→回到命中。
+#   掃描器另有兩條原生放行管道，同受此紀律、且一律入版控審查：repo 根目錄的 .gitleaksignore／.betterleaksignore
+#   （未追蹤也生效）、行內 gitleaks:allow／betterleaks:allow 註解。
+# 現行 allowlist：無。
+
+[extend]
+useDefault = true
+
+# ── 自訂規則：URL 內嵌帳密（`<scheme>://<帳號>:<密碼>@` 形；預設規則庫盲區）──
+# 涵蓋資料庫 DSN（postgres、postgresql+asyncpg、mysql、redis／rediss 等）、amqp、smtp，以及 https URL 內嵌 token
+# （例如 .gitmodules 的 url）。密碼段首字元排除 $／<／{ ——`${VAR}`、`$(cmd)`、`<pw>`、`{name}` 屬結構性佔位；
+# 以這三字元開頭的真密碼因此漏報（已知取捨）。密碼段不含 /：URL 的 userinfo 依 RFC 3986 不得含未編碼的 /，
+# 藉此排除「host:port 後路徑含 @」的誤報。帳號段可空。
+# 建立時量測：對 ver3 base-web 樹、rev6 base-web（node_modules 以外）、rev6 rust-api、rev6 docs 誤報皆 0。
+[[rules]]
+id = "ver3-credential-url"
+description = "URL 內嵌帳密（<scheme>://<帳號>:<密碼>@ 形連線字串）"
+regex = '''(?i)\b[a-z][a-z0-9+.\-]{1,30}://[^:@/\s'"<>]*:[^$<{@\s'"/][^@\s'"/]*@'''
+keywords = ["://"]

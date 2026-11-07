@@ -1,0 +1,6 @@
+#!/bin/sh
+# ver3-rev1 兩源倉（base-web／rust-api）pre-push — 機密掃描第二層，與外層同套：掃本次推送範圍的 patch、commit 訊息與 annotated tag；範圍推導與涵蓋面見 ../.githooks/scan-lib.sh。
+HOOK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$HOOK_DIR/../.githooks/scan-lib.sh"
+SCAN_CONFIG="$HOOK_DIR/../.gitleaks.toml"
+scan_push_ranges "$1" || exit 1

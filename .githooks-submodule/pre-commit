@@ -1,0 +1,10 @@
+#!/bin/sh
+# ver3-rev1 兩源倉（base-web／rust-api）pre-commit — 機密掃描，與外層同套（共用 ../.githooks/scan-lib.sh 與外層 .gitleaks.toml）。
+# 兩源倉的 core.hooksPath 設為相對路徑 ../.githooks-submodule（per-machine git config、源倉樹零改動）。git 以 hook 執行時
+# 的工作樹根解析相對路徑：源倉主工作樹與 base-web／rust-api 兩個 worktree 都直接位於外層根下，三者都解析到本目錄，
+# 外層整體搬移或改名後仍有效；另建於其他深度的 worktree 則解析不到。解析不到時 git 靜默不跑任何 hook，佈局變動後務必核對。
+# 與外層 .githooks/ 分目錄：外層日後加的檢查不波及子庫。
+HOOK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+. "$HOOK_DIR/../.githooks/scan-lib.sh"
+SCAN_CONFIG="$HOOK_DIR/../.gitleaks.toml"
+scan_staged || exit 1
