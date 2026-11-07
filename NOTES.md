@@ -19,3 +19,5 @@
 - 介面語言：第一輪 `/grill-with-docs` 決定，結果寫成 ADR。
 - 第一次改上游既有檔時：要不要加一支檢查「改到上游既有檔的 diff 區塊都帶 `ver3:` 標記」的 pre-commit（約 20 行）。
 - 新機就位：第二台機器照 README 實跑一次後，決定要不要改成腳本。
+- betterleaks 要不要從 1.7.3 升到最新穩定版 1.10.0（2026-11-04；v2.0.0-rc 系列是預發布）：升版時同批改 `.githooks/scan-lib.sh` 的 `BETTERLEAKS_VER`、`.githooks/pre-commit` 檔頭與 README「新機就位」。
+- 從 rev6 搬哪些功能、先後順序：開工時一題一問。
