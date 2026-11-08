@@ -3,34 +3,6 @@
     "superpowers@claude-plugins-official": false,
     "mattpocock-skills@claude-plugins-official": true
   },
-  "permissions": {
-    "ask": [
-      "Bash(git push *)",
-      "Bash(git * push)",
-      "Bash(git * push *)",
-      "Bash(git merge *)",
-      "Bash(git * merge)",
-      "Bash(git * merge *)",
-      "Bash(git worktree add *)",
-      "Bash(git * worktree add *)",
-      "EnterWorktree",
-      "Agent(isolation:worktree)",
-      "Bash(gh issue create *)",
-      "Bash(gh pr create *)",
-      "Bash(gh pr merge *)",
-      "Bash(npx skills *)",
-      "Bash(npx skills@* *)",
-      "Bash(npx * skills *)",
-      "Bash(npx * skills@* *)",
-      "Bash(pnpm dlx skills *)",
-      "Bash(pnpm dlx skills@* *)",
-      "Bash(pnpx skills *)",
-      "Bash(bunx skills *)"
-    ]
-  },
-  "worktree": {
-    "bgIsolation": "none"
-  },
   "claudeMdExcludes": [
     "**/fork260509-soybean-admin-base/**",
     "**/fork260509-soybean-3-rust-api/**"

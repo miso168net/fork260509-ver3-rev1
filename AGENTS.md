@@ -6,7 +6,7 @@
 
 - ver3-rev1＝以 soybean-admin v3 為基礎的 admin 專案。外層（本 repo，public）放規則、文件與兩個子庫的 gitlink：`base-web/`＝前端（public fork 的 worktree），`rust-api/`＝後端（private repo 的 worktree，取代 v3 自帶後端）；repo 與分支見 `README.md`「Repo 地圖」。
 - 開工前必讀： @NOTES.md
-- 工作目錄不是外層根時，先告知 user：外層 `.claude/settings.json`（先問清單、外掛切換、claudeMdExcludes）與 NOTES.md 的匯入這次都沒生效。
+- 工作目錄不是外層根時，先告知 user：外層 `.claude/settings.json`（外掛切換、claudeMdExcludes）與 NOTES.md 的匯入這次都沒生效。
 - 外層根下的 `fork260509-soybean-admin-base/`、`fork260509-soybean-3-rust-api/` 是兩個子庫的源倉（gitignored）：保留原狀、只讀；工作一律在子庫 worktree 裡做。
 - 子庫 git 報損壞（找不到 gitdir 等）時停手回報 user，等 user 處理。
 
@@ -87,4 +87,3 @@
 - drvfs 上 `chmod +x` 不進 git → 用 `git update-index --chmod=+x <檔>`。
 - 在 base-web 跑過任何 pnpm 指令後（`prepare` 會跑 `vp config`）→ 照 README「防線核對」核 hook，不符就停手回報 user。
 - Claude 不照本檔做 → 核外層根與上層沒有 CLAUDE.md、`.claude/CLAUDE.md`、CLAUDE.local.md；Claude 的 `/memory` 只看清單、按 Esc（選到不存在的檔會直接建出它）。
-- 含 `push`、`merge` 字樣的命令（連 commit 訊息裡的字也算）會觸發 Claude 的先問清單 → 屬預期，照常送出、等 user 核准。
