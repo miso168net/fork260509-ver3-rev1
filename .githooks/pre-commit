@@ -1,5 +1,5 @@
 #!/bin/sh
-# ver3-rev1 外層 pre-commit — 機密掃描（betterleaks 釘 1.7.3、掃暫存區）；語意與函式見 scan-lib.sh。
+# ver3-rev1 外層 pre-commit — 機密掃描（betterleaks、掃暫存區）；釘定版本、語意與函式見 scan-lib.sh。
 HOOK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 . "$HOOK_DIR/scan-lib.sh"
 SCAN_CONFIG="$HOOK_DIR/../.gitleaks.toml"

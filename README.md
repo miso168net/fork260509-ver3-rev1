@@ -30,7 +30,7 @@ for r in . fork260509-soybean-admin-base fork260509-soybean-3-rust-api; do git -
 git -C fork260509-soybean-admin-base config rerere.enabled true && git -C fork260509-soybean-admin-base config merge.conflictStyle zdiff3
 ```
 
-- 機密掃描器 betterleaks 1.7.3：從 https://github.com/betterleaks/betterleaks/releases/tag/v1.7.3 下載，以同頁 checksums.txt 驗證後放進 PATH（hook 每次都會核版本）。
+- 機密掃描器 betterleaks 1.10.0：從 https://github.com/betterleaks/betterleaks/releases/tag/v1.10.0 下載對應平台的 tarball，以同頁 checksums.txt 驗證後解壓，把執行檔改名為 `betterleaks-1.10.0` 放進 PATH（例如 `~/.local/bin/`）。hook 只找這個帶版本號的檔名，每次都會核版本；`betterleaks` 本名留給同機其他專案。
 - Claude Code：從舊機手動複製 `~/.claude/CLAUDE.md`，並把 `mattpocock-skills` 外掛裝成與舊機相同的版本（目前 1.3.1）。
 
 ## 防線核對（新機、跑過 base-web 的 pnpm 之後、hook 有疑慮時）
@@ -39,10 +39,10 @@ git -C fork260509-soybean-admin-base config rerere.enabled true && git -C fork26
 for r in . fork260509-soybean-admin-base fork260509-soybean-3-rust-api base-web rust-api; do printf '%s: ' "$r"; git -C "$r" rev-parse --git-path hooks/pre-push; done
 git ls-files -s .githooks .githooks-submodule
 git status --porcelain -- .githooks .githooks-submodule
-betterleaks version
+betterleaks-1.10.0 version
 ```
 
-期望：外層印 `.githooks/pre-push`，其餘四個印 `../.githooks-submodule/pre-push`（pre-commit 同路徑）；`ls-files -s` 列出的 pre-commit、pre-push 都是 `100755`；status 無輸出；版本 `1.7.3`。任一不符就停手：人工修好並重跑本節後才 commit（agent 回報 user）。
+期望：外層印 `.githooks/pre-push`，其餘四個印 `../.githooks-submodule/pre-push`（pre-commit 同路徑）；`ls-files -s` 列出的 pre-commit、pre-push 都是 `100755`；status 無輸出；版本 `1.10.0`。任一不符就停手：人工修好並重跑本節後才 commit（agent 回報 user）。
 
 ## AI 工具前提
 

@@ -24,21 +24,23 @@
 #   （需 git ≥ 2.31；--diff-merges=remerge 需 git ≥ 2.36，舊版 git log 失敗即落入「掃描器異常」而擋下）。
 # ★exit code 分流：掃描器 2＝機密命中；其餘非零＝掃描器本身異常（含 127 缺執行檔）。
 
-BETTERLEAKS_VER="1.7.3"
+BETTERLEAKS_VER="1.10.0"
+# 執行檔用帶版本號的檔名：同機其他專案可能共用 betterleaks 本名、釘別的版本，以檔名區隔、互不影響。
+BETTERLEAKS_BIN="betterleaks-${BETTERLEAKS_VER}"
 SCAN_MIN_RULES=100
 
 # 掃描器在場、恰為釘定版本、設定檔載入的規則數正常，並設好 git 顯示覆寫；任一不符回 1（hook 擋下）。
 scan_require() {
-  if ! command -v betterleaks >/dev/null 2>&1; then
-    echo "[scan] ✗ 找不到 betterleaks——安裝 ${BETTERLEAKS_VER}：https://github.com/betterleaks/betterleaks/releases/tag/v${BETTERLEAKS_VER}（以同頁 checksums.txt 驗證後解壓至 ~/.local/bin）" >&2
+  if ! command -v "$BETTERLEAKS_BIN" >/dev/null 2>&1; then
+    echo "[scan] ✗ 找不到 ${BETTERLEAKS_BIN}——安裝 ${BETTERLEAKS_VER}：https://github.com/betterleaks/betterleaks/releases/tag/v${BETTERLEAKS_VER}（以同頁 checksums.txt 驗證後解壓，執行檔改名為 ${BETTERLEAKS_BIN} 放進 ~/.local/bin）" >&2
     return 1
   fi
-  sc_ver=$(betterleaks version 2>/dev/null || true)
+  sc_ver=$("$BETTERLEAKS_BIN" version 2>/dev/null || true)
   if [ "$sc_ver" != "$BETTERLEAKS_VER" ]; then
-    echo "[scan] ✗ betterleaks 版本（${sc_ver:-讀不到}）≠ 釘定 ${BETTERLEAKS_VER}——改裝 ${BETTERLEAKS_VER} 後重試" >&2
+    echo "[scan] ✗ ${BETTERLEAKS_BIN} 的版本（${sc_ver:-讀不到}）≠ 釘定 ${BETTERLEAKS_VER}——改裝 ${BETTERLEAKS_VER} 後重試" >&2
     return 1
   fi
-  sc_rules=$(betterleaks config check --config "$SCAN_CONFIG" 2>/dev/null | sed -n 's/^OK: \([0-9][0-9]*\) rules.*/\1/p')
+  sc_rules=$("$BETTERLEAKS_BIN" config check --config "$SCAN_CONFIG" 2>/dev/null | sed -n 's/^OK: \([0-9][0-9]*\) rules.*/\1/p')
   if [ -z "$sc_rules" ] || [ "$sc_rules" -lt "$SCAN_MIN_RULES" ]; then
     echo "[scan] ✗ 外層 .gitleaks.toml 規則載入異常（config check 回報 ${sc_rules:-無法讀取} 條，至少應有 ${SCAN_MIN_RULES} 條）——檔案缺席、TOML 有誤，或 [extend] useDefault = true 被改掉；修正後重試" >&2
     return 1
@@ -51,7 +53,7 @@ scan_require() {
 
 # 跑一次 betterleaks（子命令與其引數原樣傳入），回傳其 exit code。
 scan_run() {
-  betterleaks "$@" --config "$SCAN_CONFIG" --redact --verbose --exit-code 2
+  "$BETTERLEAKS_BIN" "$@" --config "$SCAN_CONFIG" --redact --verbose --exit-code 2
 }
 
 # 判讀 exit code：$1＝rc、$2＝hook 名、$3＝掃描對象說明；命中或異常時印訊息並回 1。
